@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comprensión de Textos</title>
+  <style>
+    :root {
+      --primary-color: #0f4c81;
+      --secondary-color: #2b6cb0;
+      --accent-bg: #f0f4f8;
+      --orientaciones-bg: #ebf8ff;
+      --orientaciones-border: #3182ce;
+      --media-bg: #fffaf0;
+      --media-border: #dd6b20;
+      --text-color: #2d3748;
+      --border-color: #cbd5e0;
+      --card-bg: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background-color: var(--accent-bg);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: var(--primary-color);
+      color: #ffffff;
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    nav {
+      background-color: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.25rem;
+      padding: 0.5rem;
+    }
+
+    .tab-button {
+      background-color: transparent;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      padding: 0.6rem 1rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-color);
+      cursor: pointer;
+    }
+
+    .tab-button:hover {
+      background-color: var(--accent-bg);
+    }
+
+    .tab-button.active {
+      background-color: var(--primary-color);
+      color: #ffffff;
+    }
+
+    main {
+      flex: 1;
+      max-width: 900px;
+      width: 100%;
+      margin: 1.5rem auto;
+      padding: 0 1rem;
+    }
+
+    .tab-content {
+      display: none;
+      background-color: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    h2 {
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+      border-bottom: 2px solid var(--accent-bg);
+      padding-bottom: 0.5rem;
+    }
+
+    h3 {
+      color: var(--secondary-color);
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p, ul, ol {
+      margin-bottom: 1rem;
+    }
+
+    ul, ol {
+      padding-left: 1.5rem;
+    }
+
+    .orientaciones-box {
+      background-color: var(--orientaciones-bg);
+      border-left: 4px solid var(--orientaciones-border);
+      padding: 1rem;
+      margin: 1.5rem 0;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .orientaciones-box h4 {
+      color: var(--orientaciones-border);
+      margin-bottom: 0.5rem;
+    }
+
+    .media-box {
+      background-color: var(--media-bg);
+      border: 1px dashed var(--media-border);
+      padding: 1rem;
+      margin: 1.5rem 0;
+      text-align: center;
+      border-radius: 4px;
+      font-weight: 600;
+      color: #7b341e;
+    }
+
+    .accordion-item {
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      margin-bottom: 0.75rem;
+      overflow: hidden;
+    }
+
+    .accordion-header {
+      width: 100%;
+      background-color: var(--accent-bg);
+      border: none;
+      padding: 0.8rem 1rem;
+      text-align: left;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--primary-color);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .accordion-header:hover {
+      background-color: #e2e8f0;
+    }
+
+    .accordion-header::after {
+      content: '+';
+      font-size: 1.2rem;
+    }
+
+    .accordion-header[aria-expanded="true"]::after {
+      content: '−';
+    }
+
+    .accordion-panel {
+      padding: 1rem;
+      background-color: var(--card-bg);
+    }
+
+    .accordion-panel[hidden] {
+      display: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1rem;
+    }
+
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+    }
+
+    th {
+      background-color: var(--accent-bg);
+    }
+
+    footer {
+      background-color: var(--primary-color);
+      color: #ffffff;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      nav {
+        flex-direction: column;
+      }
+      .tab-button {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Comprensión de textos</h1>
+    <p>Guía teórico-conceptual para el acompañamiento a las trayectorias iniciales y el análisis textual en el nivel superior para alumnos de 7mo</p>
+  </header>
+
+  <nav role="tablist">
+    <button class="tab-button active" role="tab" aria-selected="true" onclick="openTab(event, 'tab-intro')">Introducción</button>
+    <button class="tab-button" role="tab" aria-selected="false" onclick="openTab(event, 'tab-parte1')">PARTE I: El discurso</button>
+    <button class="tab-button" role="tab" aria-selected="false" onclick="openTab(event, 'tab-parte2')">PARTE II: Cohesión</button>
+    <button class="tab-button" role="tab" aria-selected="false" onclick="openTab(event, 'tab-parte3')">PARTE III: Organización</button>
+    <button class="tab-button" role="tab" aria-selected="false" onclick="openTab(event, 'tab-parte4')">PARTE IV: Enunciador</button>
+    <button class="tab-button" role="tab" aria-selected="false" onclick="openTab(event, 'tab-parte5')">PARTE V: Transformar</button>
+  </nav>
+
+  <main>
+
+    <!-- SECCIÓN: INTRODUCCIÓN -->
+    <section id="tab-intro" class="tab-content active">
+      <h2>Introducción: leer, comprender y escribir</h2>
+      <p>Comprender un texto no consiste solamente en reconocer las palabras que lo componen ni en recuperar la información que presenta. Comprender supone construir una representación de aquello que se lee: reconocer cómo está organizado el texto, establecer relaciones entre sus partes, identificar las ideas principales y secundarias, inferir información que no aparece expresada de manera directa y reconocer la perspectiva desde la cual se construye el discurso.</p>
+      <p>En este sentido, leer y escribir son procesos estrechamente relacionados. Una comprensión profunda supone, de algún modo, poder reconstruir el texto: explicarlo con palabras propias, establecer relaciones entre sus ideas, resumirlo o reformularlo. Estas operaciones pueden realizarse mentalmente, pero cuando se ponen por escrito permiten visibilizar el proceso de comprensión y comprobar qué se ha comprendido y qué aspectos todavía presentan dificultades.</p>
+      <p>Esta relación entre lectura, comprensión y escritura puede entenderse a partir de tres razones:</p>
+      <ol>
+        <li><strong>Procesamiento activo de la información:</strong> El lector no recibe pasivamente lo que el texto dice, sino que construye relaciones mientras lee. Para hacerlo, necesita reconocer la estructura textual (introducción, desarrollo, conclusión), identificar la organización de los párrafos, reconocer los conectores y comprender las relaciones lógicas y jerárquicas entre las ideas principales y las secundarias.</li>
+        <li><strong>Inferencia y toma de posición:</strong> El lector debe completar información que el texto no expresa de manera explícita, relacionar lo leído con otros conocimientos y evaluar las afirmaciones que encuentra. Por eso, la comprensión se pone en juego mediante la paráfrasis (expresar una idea con palabras propias) y la síntesis (identificar y formular lo central).</li>
+        <li><strong>Conocimientos lingüísticos compartidos:</strong> Al leer, el estudiante observa cómo se selecciona el vocabulario, se organizan las oraciones, se usan los signos de puntuación y se relacionan las partes del texto para producir determinados sentidos (informar, explicar, describir, argumentar, persuadir). Al escribir, se ponen en juego conocimientos similares.</li>
+      </ol>
+      <p>El objetivo es ofrecer una guía teórico-conceptual elaborada para las y los estudiantes de 7.º año de la Escuela de Agricultura y Ganadería, en el marco del Acompañamiento a las Trayectorias iniciales de la Universidad Nacional del Sur.</p>
+
+      <div class="orientaciones-box">
+        <h4>Orientaciones para analizar</h4>
+        <p>Las explicaciones teóricas breves permiten acceder a los conceptos del curso y constituyen un material de referencia para acompañar el análisis textual y la comprensión lectora en el nivel superior.</p>
+      </div>
+
+      <div class="media-box">
+        Pegar acá el enlace de video o presentación sobre la Introducción
+      </div>
+
+      <!-- ACORDEONES -->
+      <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false" aria-controls="panel-intro-pistas">Pistas y recursos</button>
+        <div id="panel-intro-pistas" class="accordion-panel" hidden>
+          <p>Identificar la estructura textual básica: introducción, desarrollo y conclusión.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false" aria-controls="panel-intro-autoeval">Autoevaluación</button>
+        <div id="panel-intro-autoeval" class="accordion-panel" hidden>
+          <p>¿Puedo explicar la idea central del texto con mis propias palabras mediante una paráfrasis?</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false" aria-controls="panel-intro-tarea">Consignas y tarea</button>
+        <div id="panel-intro-tarea" class="accordion-panel" hidden>
+          <p>Pegar acá las consignas y tareas asociadas a la Introducción.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN: PARTE I -->
+    <section id="tab-parte1" class="tab-content">
+      <h2>PARTE I: La noción de discurso como práctica social</h2>
+      
+      <h3>La situación comunicativa</h3>
+      <p>Todo texto, oral o escrito, se produce dentro de lo que llamamos una situación de comunicación. Esta situación se refiere a todos los elementos que entran en juego para que un acto comunicativo tenga lugar. En el esquema básico de la comunicación donde un emisor envía un mensaje a un receptor a través de un canal, el mensaje se comprende porque tanto el emisor como el receptor comparten el mismo código y ambos tienen conocimiento o idea del referente, es decir de lo que el mensaje trata. En términos generales se pueden reconocer los siguientes siete elementos constitutivos de la situación comunicativa:</p>
+      <ul>
+        <li><strong>Los participantes de la situación comunicativa </strong>son el emisor que produce el texto y el receptor es quien lo lee (el destinatario). Las preguntas que se suelen formular para establecer quienes participan son: ¿Quién escribe? ¿Quién habla? ¿A quién? ¿Quién lee u oye?</li>
+        <li><strong>El tópico o tema:</strong>El tópico o tema que se desarrolla en el texto. Para determinarlo la pregunta que hacemos es ¿de qué trata?</li>
+        <li><strong>Las coordenadas espacio-temporales</strong> hacen referencia al lugar y al tiempo en que se ha producido el texto. En el caso de los textos escritos la comunicación es diferida. Para establecer estas coordenadas, se pueden hacer estas preguntas:¿Cuándo se escribió?, ¿Dónde? O también ¿Dónde se publicó?, ¿Quién lo publicó? </li>
+        <li><strong>El canal</strong> es el medio físico por el que se transmite el mensaje y puede ser oral o escrito. La pregunta que se formula es ¿cómo llegó el mensaje?</li>
+        <li><strong>El código</strong> es el lenguaje o registro de lengua que se usa en el texto. Para determinarlo la pregunta que hacemos es ¿cómo está escrito?, ¿qué lenguaje lo constituye?</li>
+        <li><strong>La naturaleza del evento:</strong> cse refiere al tipo de comunicación pública o privada. Para determinarla la pregunta que hacemos es ¿a quién estaba o está dirigido?</li>
+        <li><strong>El propósito</strong> es el objetivo de comunicación que tiene un emisor al producir el mensaje, pero también lo que pretenden los participantes que debería resultar del evento comunicativo. Para determinarlo la pregunta que hacemos es ¿Para qué se escribió? ¿Con qué fin?</li>
+      </ul>
+
+<div class="media-box">
+       <img src="file:///C:/Escritorio/ATI/Imágenes/Copilot_Situación comunicativa.png" alt="Descripción de la imagen" style="max-width: 100%; height: auto;">
+  </div>
+
+
+
+      <h3>Los géneros discursivos</h3>
+      <p>Un género discursivo es el conjunto de enunciados relativamente estable, ligado a una esfera social determinada, es decir son formas de discurso que se han fijado por el uso y se repiten con relativa estabilidad en las mismas situaciones comunicativas. Como son formas compartidas por una comunidad determinada, los hablantes pueden reconocerlos a partir de su formato externo, su estructura, el contexto en que se producen y el registro.</p>
+<p>Los textos que pertenecen a un mismo género discursivo comparten la misma forma de organizar la información y el mismo conjunto de recursos lingüísticos. El uso de los conocimientos lingüísticos y discursivos típicos de un género es convencional, esto es, está estandarizado y viene establecido por la tradición. En este sentido, el uso de los géneros discursivos se adquiere con el uso (la lectura o la escritura) y esa familiaridad con la forma, el contenido y los recursos lingüísticos permite diferenciarlos, esto es distinguir una prescripción médica, la orden para hacer un estudio, una carta, una noticia periodística, una receta, una conferencia, un informe o un contrato, por mencionar algunos. Cada género discursivo responde a un propósito culturalmente establecido. Las diferencias de propósitos se manifiestan en cómo se organiza el texto. De esta manera, los géneros (informe de investigación, noticia periodística, resolución, sentencia) se manifiestan a través de textos estructurados. Este es uno de los motivos por los que se afirma que hay tantos géneros como contextos de uso posibles.<p>
+
+ <div class="media-box">
+       <img src="file:///C:/Escritorio/ATI/Imágenes/géneros discursivos sin errores.jpg" alt="Descripción de la imagen" style="max-width: 100%; height: auto;">
+  </div>
+
+
+      <h3>El abstract</h3>
+      <p>El abstract es un género del ámbito científico académico que tiene estrecha relación con el artículo de investigación. Consiste en la presentación abreviada de los contenidos principales de un artículo de investigación. Es una descripción breve que anticipa el contenido y la estructura del artículo que acompaña, ambos del mismo autor. El abstract no es un texto independiente: acompaña a un artículo de investigación, publicado en revistas especializadas. El ámbito de circulación son las revistas científicas o especializadas.<p>
+<p>La lectura del abstract, en tanto ofrece el conocimiento exacto y conciso del artículo completo, permite a los lectores acceder de manera rápida al contenido del Artículo de Investigación y evaluar si el artículo es de su interés o no.<p>
+<p>La estructura del abstract reproduce la del artículo de investigación. Contiene los aspectos o las partes que se describen en la investigación que se resume y son los siguientes cinco:</p>
+      <ol>
+        <li><strong>Encuadre temático:</strong> el autor enmarca sintéticamente la investigación en un campo temático determinado. Se plantea el problema que da pie a la investigación. Suele incluir alguna referencia a los supuestos teóricos de los que parte el autor para recortar su investigación. Responde a la pregunta ¿de qué presupuestos temáticos partió el autor?</li>
+        <li><strong>Propósito:</strong> el autor ofrece una indicación precisa de la intención del autor, su tesis o la hipótesis que forma la base de la investigación que se informa. Responde a la pregunta ¿Qué hizo el autor?</li>
+        <li><strong>Consideraciones metodológicas:</strong> Las consideraciones metodológicas: el autor proporciona indicaciones sobre el método, incluye información sobre los materiales y procedimientos realizados en la investigación. Responde a la pregunta ¿Cómo lo hizo?</li>
+        <li><strong>Resultados:</strong> el autor menciona sus observaciones y hallazgos y también sugiere soluciones al problema que puede haber presentado en el primer movimiento. Responde a la pregunta ¿Qué halló/ descubrió el autor?</li>
+        <li><strong>Conclusiones:</strong> Las conclusiones: el autor interpreta los resultados, explicita inferencias y establece proyecciones. Generalmente, se incluye una indicación de las implicaciones y/o aplicaciones de los hallazgos presentados. Responde a la pregunta ¿Qué concluyó el autor?</li>
+      </ol>
+
+      <div class="orientaciones-box">
+        <h4>Orientaciones para analizar</h4>
+        <p>Esta información es aplicable cada vez que empezamos la lectura de cualquier texto. Pregunta clave: ¿Qué tipo de texto es y qué espero encontrar en él?</p>
+      </div>
+
+      <div class="media-box">
+       <img src="file:///C:/Escritorio/ATI/Imágenes/Situación comunicativa_Copilot}.jpg" alt="Descripción de la imagen" style="max-width: 100%; height: auto;">
+     
+
+      <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false" aria-controls="panel-p1-pistas">Pistas y recursos</button>
+        <div id="panel-p1-pistas" class="accordion-panel" hidden>
+          <p>Preguntas guía: ¿Quién?, ¿A quién?, ¿Para qué?, ¿De qué?, ¿Cuándo?, ¿Dónde?, ¿Cómo?, ¿Con qué?</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false" aria-controls="panel-p1-autoeval">Autoevaluación</button>
+        <div id="panel-p1-autoeval" class="accordion-panel" hidden>
+          <p>¿Logro identificar las 5 partes constitutivas en la lectura de un abstract académico?</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false" aria-controls="panel-p1-tarea">Consignas y tarea</button>
+        <div id="panel-p1-tarea" class="accordion-panel" hidden>
+          <p>Pegar acá las consignas y tareas sobre la situación comunicativa y géneros discursivos.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN: PARTE II -->
+    <section id="tab-parte2" class="tab-content">
+      <h2>PARTE II: Operaciones para construir la cohesión</h2>
+
+      <h3>Repetición y relaciones léxicas</h3>
+      <p>Permiten construir una red de significados en el texto conectando palabras por su sentido:</p>
+      <ul>
+        <li><strong>Sinonimia / expresiones equivalentes:</strong> Reemplazo por una palabra o frase de significado similar para aportar matices o aclaraciones.</li>
+        <li><strong>Hiperonimia e hiponimia:</strong> Relaciones de inclusión. Hiperónimo es la categoría general (ej. <em>Infraestructura</em>, <em>Metales</em>); hipónimos son los elementos específicos incluidos (ej. <em>Transporte, energía</em>; <em>Cobre, zinc</em>).</li>
+        <li><strong>Palabras generalizadoras:</strong> Sustantivos amplios que resumen o encapsulan ideas previas (ej. <em>hecho, problema, situación, fenómeno, concepto, proceso</em>).</li>
+        <li><strong>Campo semántico:</strong> Conjunto de palabras de distintas categorías que pertenecen a un mismo tema o esfera de significado (ej. sustantivos, verbos y adjetivos sobre sostenibilidad).</li>
+        <li><strong>Antonimia:</strong> Relación entre opuestos para delimitar y clarificar conceptos por contraste (ej. <em>autótrofos / heterótrofos</em>).</li>
+      </ul>
+
+      <h3>Términos técnicos</h3>
+      <p>Palabras con significado específico y preciso delimitado dentro de una disciplina. A diferencia del lenguaje cotidiano, no son polisémicos, tienen carácter denotativo y pocas veces poseen sinónimos exactos (ej. <em>Emisiones netas cero</em>, <em>Descarbonización</em>).</p>
+
+      <h3>Referencia y sustitución</h3>
+      <p><strong>Referencia:</strong> Procedimiento que sustituye una palabra por otra (frecuentemente pronombres) para evitar reiteraciones.<br>
+      <strong>Sustitución:</strong> Reemplazo de una palabra o expresión por otra diferente que cumple la misma función y refiere al mismo contenido en el texto.</p>
+
+      <h3>Conexión de ideas y relación causal</h3>
+      <p><strong>Marcadores textuales:</strong> Señalan la organización de las ideas y la estructura del texto (según Marta Marín, 2015: <em>iniciadores, distribuidores, enumeradores, conclusivos, resumidores, de cambio de tema, aditivos, digresivos, metatextuales, de punto de vista, de reformulación, de ejemplificación, evidenciales, de realce, de confirmación</em>).</p>
+      <p><strong>Conectores:</strong> Muestran la relación lógica entre ideas o enunciados (<em>adición, condición, causalidad, justificación, consecuencia, oposición, finales, generalización, reformulación</em>).</p>
+
+      <div class="orientaciones-box">
+        <h4>Orientaciones para analizar</h4>
+        <p>¿Qué palabras o expresiones mantienen el mismo tema a lo largo del texto? Buscar qué elemento está recuperando la expresión. Los términos técnicos se definen en diccionarios especializados. Los marcadores ayudan al lector a recorrer el texto. Se evaluará el reconocimiento y la sustitución de conectores y marcadores en el texto.</p>
+      </div>
+
+      <div class="media-box">
+        Pegar acá el enlace de video sobre Cohesión y Conectores
+      </div>
+
+      <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false" aria-controls="panel-p2-pistas">Pistas y recursos</button>
+        <div id="panel-p2-pistas" class="accordion-panel" hidden>
+          <p>Comprobar la sustitución de conectores manteniendo el sentido causal o gramatical de la oración.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false" aria-controls="panel-p2-autoeval">Autoevaluación</button>
+        <div id="panel-p2-autoeval" class="accordion-panel" hidden>
+          <p>¿Distingo entre la función de un marcador (organiza secuencias) y un conector (relaciona enunciados)?</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false" aria-controls="panel-p2-tarea">Consignas y tarea</button>
+        <div id="panel-p2-tarea" class="accordion-panel" hidden>
+          <p>Pegar acá las consignas y tareas sobre relaciones léxicas, referencia y conectores.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN: PARTE III -->
+    <section id="tab-parte3" class="tab-content">
+      <h2>PARTE III: CÓMO SE ORGANIZA LA INFORMACIÓN</h2>
+
+      <h3>Clasificación</h3>
+      <p>Relacionar y ordenar sistemáticamente elementos semejantes de acuerdo con un criterio relevante (localización, características, función). Permite construir taxonomías y organizar segmentos explicativos.</p>
+
+      <h3>Comparación</h3>
+      <p>Establece semejanzas y diferencias entre objetos de comparación (A, B) según categorías específicas (1, 2, 3). Utiliza marcadores de contraste: <em>contrariamente, al contrario, en contraste, inversamente, a la inversa, contrastivamente</em>.</p>
+
+      <h3>Definición y reformulación</h3>
+      <p><strong>Definición:</strong> Expone los aspectos genéricos y distintivos de un concepto.<br>
+      <strong>Reformulación:</strong> Aclara o añade información sobre un segmento anterior (marcadores: <em>es decir, a saber, o sea, en otras palabras, sintetizando</em>).</p>
+
+      <h3>Descripción</h3>
+      <p>Identifica propiedades, funciones o partes para caracterizar un elemento o concepto (responde a '¿cómo es?'). Se organiza en dos momentos: <em>denominación</em> y <em>expansión</em>.</p>
+
+      <h3>Instrucciones</h3>
+      <p>Operaciones discursivas que orientan procedimientos de manera detallada, clara y precisa mediante prescripciones secuenciales u ordenadas.</p>
+
+      <h3>Ejemplificación</h3>
+      <p>Aporta datos empíricos o casos particulares para aclarar conceptos abstractos (expresiones: <em>por ejemplo, por caso, tal es el caso de</em>).</p>
+
+      <h3>Enumeración</h3>
+      <p>Expresión sucesiva de las partes de un todo. Suele antecederse por dos puntos (:) e introducción explícita.</p>
+
+      <h3>Narración</h3>
+      <p>Exposición de hechos sucedidos en el tiempo (sucesión temporal y/o causal) que conllevan una transformación de un estado inicial.</p>
+
+      <div class="orientaciones-box">
+        <h4>Orientaciones para analizar</h4>
+        <p>Identificar la operación discursiva predominante según la estructura de la información presentada en el fragmento.</p>
+      </div>
+
+      <div class="media-box">
+        Pegar acá el enlace de presentación sobre Organización de la información
+      </div>
+
+      <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false" aria-controls="panel-p3-pistas">Pistas y recursos</button>
+        <div id="panel-p3-pistas" class="accordion-panel" hidden>
+          <p>Buscar organizadores gráficos asociados a cada estructura: cuadros comparativos, esquemas narrativos, listas.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false" aria-controls="panel-p3-autoeval">Autoevaluación</button>
+        <div id="panel-p3-autoeval" class="accordion-panel" hidden>
+          <p>¿Identifico los criterios subyacentes cuando un texto presenta una clasificación?</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false" aria-controls="panel-p3-tarea">Consignas y tarea</button>
+        <div id="panel-p3-tarea" class="accordion-panel" hidden>
+          <p>Pegar acá las consignas sobre organización de la información.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN: PARTE IV -->
+    <section id="tab-parte4" class="tab-content">
+      <h2>PARTE IV: LA POSICIÓN DEL ENUNCIADOR</h2>
+
+      <h3>Creencia y suspensión de la creencia</h3>
+      <p>Expresa la actitud y el grado de compromiso del autor con la verdad de lo que enuncia (certeza vs. incertidumbre/duda). Recursos epistémicos (Castro Fox, 2012):</p>
+      <ul>
+        <li>Verbos modales (<em>poder, deber, tener que</em>)</li>
+        <li>Verbos epistémicos (<em>saber, suponer, creer, parecer</em>)</li>
+        <li>Adverbios y frases adverbiales (<em>posiblemente, probablemente, seguramente</em>)</li>
+        <li>Adjetivos (<em>posible, probable, seguro</em>)</li>
+        <li>Sustantivos epistémicos (<em>probabilidad, posibilidad, certeza</em>)</li>
+      </ul>
+
+      <h3>Subjetividad y valoración del autor</h3>
+      <p>Marcas lingüísticas o huellas que expresan la valoración del sujeto sobre los hechos:</p>
+      <ul>
+        <li>Juicios de valor positivos o negativos (<em>relevante, fundamental, riguroso, simple</em>)</li>
+        <li>Valoraciones cuantificables (<em>cerca, lejos, numerosos, escasos, muchos</em>)</li>
+        <li>Valoraciones sobre verdad/falsedad/incertidumbre (<em>verdadero, evidencia, incierto, falacia</em>)</li>
+      </ul>
+
+      <h3>Desagentivación</h3>
+      <p>Recursos gramaticales para omitir o evitar la presencia explícita de los agentes (personas o participantes), centrando la atención en objetos o fenómenos para brindar objetividad (ej. uso de pasiva con 'se', voz pasiva, nominalizaciones).</p>
+
+      <h3>Argumentación</h3>
+      <p>Intento de persuadir al destinatario sobre una postura. Estructura habitual:</p>
+      <ul>
+        <li><strong>Punto de partida:</strong> Introducción al tema o problema.</li>
+        <li><strong>Tesis:</strong> Opinión o postura sustentada por el autor.</li>
+        <li><strong>Cuerpo argumentativo:</strong> Estrategias (ejemplificación, cita de autoridad, analogía, concesión, refutación).</li>
+        <li><strong>Conclusión:</strong> Refuerzo del punto de vista formulado.</li>
+      </ul>
+
+      <h3>Citación</h3>
+      <p>Incorporación de voces de otros enunciadores para respaldar o refutar:</p>
+      <ul>
+        <li><strong>Cita directa:</strong> Reproduce literalmente entre comillas, con verbo de decir y dos puntos.</li>
+        <li><strong>Cita indirecta:</strong> Subordina la voz citada sintácticamente (uso de <em>que</em> o paréntesis con autor y año) mediante una reformulación del autor del texto.</li>
+      </ul>
+
+      <div class="orientaciones-box">
+        <h4>Orientaciones para analizar</h4>
+        <p>¿Con qué grado de certeza presenta el autor lo que dice? ¿Cómo evalúa aquello de lo que habla? ¿Quién realiza la acción? ¿Está mencionado o queda oculto/no especificado? ¿Cómo presenta el enunciador aquello que está diciendo?</p>
+      </div>
+
+      <div class="media-box">
+        Pegar acá el enlace de video sobre Posición del enunciador y Argumentación
+      </div>
+
+      <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false" aria-controls="panel-p4-pistas">Pistas y recursos</button>
+        <div id="panel-p4-pistas" class="accordion-panel" hidden>
+          <p>Analizar los verbos de decir elegidos al citar a otros autores (afirma, sugiere, critica).</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false" aria-controls="panel-p4-autoeval">Autoevaluación</button>
+        <div id="panel-p4-autoeval" class="accordion-panel" hidden>
+          <p>¿Reconozco cuándo un autor oculta al agente para otorgarle objetividad científica al texto?</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false" aria-controls="panel-p4-tarea">Consignas y tarea</button>
+        <div id="panel-p4-tarea" class="accordion-panel" hidden>
+          <p>Pegar acá las consignas sobre subjetividad, argumentación y citas.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN: PARTE V -->
+    <section id="tab-parte5" class="tab-content">
+      <h2>PARTE V: TRANSFORMAR LA INFORMACIÓN</h2>
+
+      <h3>Representación gráfica</h3>
+      <p>Sintetiza visualmente la información desarrollada en el texto. Transformar la información verbal en una organización visual permite observar relaciones, jerarquías, secuencias o proporciones por medio de:</p>
+      <ul>
+        <li><strong>Tablas:</strong> Orientadas principalmente a la comparación estructurada de datos.</li>
+        <li><strong>Cuadros:</strong> Facilitan la jerarquización y estructuración de conceptos.</li>
+        <li><strong>Diagramas:</strong> Explicitan relaciones, flujos y conexiones lógicas o temporales.</li>
+      </ul>
+
+      <div class="orientaciones-box">
+        <h4>Orientaciones para analizar</h4>
+        <p>Representar gráficamente es transformar la información verbal en una organización visual que permita observar relaciones, jerarquías, secuencias o proporciones.</p>
+      </div>
+
+      <div class="media-box">
+        Pegar acá el enlace de presentación sobre Representación gráfica
+      </div>
+
+      <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false" aria-controls="panel-p5-pistas">Pistas y recursos</button>
+        <div id="panel-p5-pistas" class="accordion-panel" hidden>
+          <p>Seleccionar el tipo de gráfico adecuado según la operación discursiva del texto original.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false" aria-controls="panel-p5-autoeval">Autoevaluación</button>
+        <div id="panel-p5-autoeval" class="accordion-panel" hidden>
+          <p>¿El esquema gráfico elaborado mantiene la jerarquía e información esencial del texto de origen?</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false" aria-controls="panel-p5-tarea">Consignas y tarea</button>
+        <div id="panel-p5-tarea" class="accordion-panel" hidden>
+          <p>Pegar acá las consignas de transformación de información verbal a gráfica.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Acompañamiento a las Trayectorias Iniciales — Escuela de Agricultura y Ganadería — Universidad Nacional del Sur</p>
+    <p>Autora: Laura Orsi</p>
+  </footer>
+
+  <script>
+    function openTab(evt, tabId) {
+      const contents = document.querySelectorAll('.tab-content');
+      contents.forEach(content => content.classList.remove('active'));
+
+      const buttons = document.querySelectorAll('.tab-button');
+      buttons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-selected', 'false');
+      });
+
+      document.getElementById(tabId).classList.add('active');
+      evt.currentTarget.classList.add('active');
+      evt.currentTarget.setAttribute('aria-selected', 'true');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const accordionHeaders = document.querySelectorAll('.accordion-header');
+      accordionHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+          const isExpanded = header.getAttribute('aria-expanded') === 'true';
+          header.setAttribute('aria-expanded', !isExpanded);
+          const panelId = header.getAttribute('aria-controls');
+          const panel = document.getElementById(panelId);
+          if (panel) {
+            panel.hidden = isExpanded;
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
